@@ -105,11 +105,11 @@ component {
 				if( versionSearch.pos[1] && versionSearch.match.len() > 1 ) {
 					var javaVersion = versionSearch.match[2]
 					print.line( "Found Java version: [#javaVersion#]" ).toConsole();
-					if( val( javaVersion.listGetAt(1,".") ) < 17 ) {
+					if( val( javaVersion.listGetAt(1,".").reReplace( "['""]", "", "all" ) ) < 17 ) {
 						throw( message="BoxLang Requires a JDK version of 17 or higher.  Your current version is [#javaVersion#].", detail="Add [javaVersion=openjdk17_jdk] to your start command.", type="commandException" );
 					}
 				}
-				javaBin = fileSystemUtil.normalizeSlashes( javaBin );
+				javaBin = fileSystemUtil.normalizeSlashes( javaBin ).reReplace( "['""]", "", "all" );
 				javacBin = javaBin.replace( "/bin/java", "/bin/javac" );
 				if( !( fileExists( javacBin ) ) ) {					
 					throw( message="BoxLang Requires a JDK (not JRE). [#javacBin#] doesn't exist.", detail="Add [javaVersion=openjdk17_jdk] to your start command.", type="commandException" ).toConsole();
